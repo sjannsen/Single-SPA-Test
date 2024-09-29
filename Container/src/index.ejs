@@ -56,12 +56,43 @@
 		<script type="systemjs-importmap">
 			{
 				"imports": {
-					"@single-spa/welcome": "https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js",
-					"@MEA/root-config": "//localhost:9000/MEA-root-config.js",
-					"@MEA/React-MicroFrontend": "//localhost:8080/MEA-React-MicroFrontend.js",
-					"@MEA/React-MicroFrontend2": "//localhost:8081/MEA-React-MicroFrontend2.js"
+					"@single-spa/welcome": "https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js"
 				}
 			}
+		</script>
+
+		<script>
+			const fetchedPlayerFrontends = [
+				{
+					name: '@MEA/React-MicroFrontend',
+					url: '//localhost:8080/MEA-React-MicroFrontend.js',
+				},
+				{
+					name: '@MEA/React-MicroFrontend2',
+					url: '//localhost:8081/MEA-React-MicroFrontend2.js',
+				},
+			]
+
+			const microfrontends = [
+				{
+					name: '@MEA/root-config',
+					url: '//localhost:9000/MEA-root-config.js',
+				},
+				...fetchedPlayerFrontends,
+			]
+
+			const importMap = {
+				imports: {},
+			}
+
+			microfrontends.forEach(({ name, url }) => {
+				importMap.imports[name] = url
+			})
+
+			const script = document.createElement('script')
+			script.type = 'systemjs-importmap'
+			script.textContent = JSON.stringify(importMap)
+			document.head.appendChild(script)
 		</script>
 		<% } %>
 
